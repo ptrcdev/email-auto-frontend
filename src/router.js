@@ -3,13 +3,15 @@ import LoginPage from './components/LoginPage.vue'
 import AuthSuccess from './components/AuthSuccess.vue'
 import AuthError from './components/AuthError.vue'
 import OnboardingPage from './components/OnboardingPage.vue'
+import DashboardPage from './components/DashboardPage.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/success', name: 'AuthSuccess', component: AuthSuccess },
   { path: '/error', name: 'AuthError', component: AuthError },
-  { path: '/onboarding', name: 'Onboarding', component: OnboardingPage }
+  { path: '/onboarding', name: 'Onboarding', component: OnboardingPage },
+  { path: '/dashboard', name: 'Dashboard', component: DashboardPage }
 ]
 
 const router = createRouter({
