@@ -254,6 +254,7 @@
 
 <script>
 import { getDashboardEmails, searchEmails, getDashboardStats } from '../api.js'
+import { subscribeUserToPush } from '../push.js'
 
 export default {
   name: 'DashboardPage',
@@ -316,6 +317,7 @@ export default {
       return
     }
     this.loadData()
+    subscribeUserToPush(this.email)
   },
   methods: {
     async loadData() {
