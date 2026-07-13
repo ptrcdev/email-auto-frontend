@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { saveSession } from '../session.js'
+
 export default {
   name: 'AuthSuccess',
   data() {
@@ -34,6 +36,7 @@ export default {
     const email = params.get('email')
     this.isNew = params.get('new') === 'true'
     if (!email) { this.$router.replace('/login'); return }
+    saveSession(email)
     setTimeout(() => {
       if (this.isNew) {
         this.$router.replace({ path: '/onboarding', query: { email } })

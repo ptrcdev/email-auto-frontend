@@ -255,6 +255,7 @@
 <script>
 import { getDashboardEmails, searchEmails, getDashboardStats } from '../api.js'
 import { subscribeUserToPush } from '../push.js'
+import { clearSession } from '../session.js'
 
 export default {
   name: 'DashboardPage',
@@ -394,6 +395,7 @@ export default {
       return colors[Math.abs(hash) % colors.length]
     },
     logout() {
+      clearSession()
       this.$router.push('/login')
     },
   },
