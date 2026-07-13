@@ -43,3 +43,71 @@ export async function getDashboardStats(email) {
   if (!response.ok) throw new Error('Failed to fetch stats')
   return response.json()
 }
+
+export async function getPriorities(email) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}`,
+  )
+  if (!response.ok) throw new Error('Failed to fetch priorities')
+  return response.json()
+}
+
+export async function savePriorities(email, priorities) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ priorities }),
+    },
+  )
+  if (!response.ok) throw new Error('Failed to save priorities')
+  return response.json()
+}
+
+export async function getUserSettings(email) {
+  const response = await fetch(
+    `${BASE_URL}/users/${encodeURIComponent(email)}/settings`,
+  )
+  if (!response.ok) throw new Error('Failed to fetch settings')
+  return response.json()
+}
+
+export async function saveUserSettings(email, data) {
+  const response = await fetch(
+    `${BASE_URL}/users/${encodeURIComponent(email)}/settings`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    },
+  )
+  if (!response.ok) throw new Error('Failed to save settings')
+  return response.json()
+}
+
+export async function getVapidPublicKey() {
+  const response = await fetch(`${BASE_URL}/push/vapid-public-key`)
+  if (!response.ok) throw new Error('Failed to fetch VAPID key')
+  return response.json()
+}
+
+export async function subscribePush(email, subscription) {
+  const response = await fetch(`${BASE_URL}/push/subscribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, subscription }),
+  })
+  if (!response.ok) throw new Error('Failed to subscribe to push')
+  return response.json()
+}
+
+export async function unsubscribePush(email) {
+  const response = await fetch(`${BASE_URL}/push/unsubscribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  })
+  if (!response.ok) throw new Error('Failed to unsubscribe from push')
+  return response.json()
+}
