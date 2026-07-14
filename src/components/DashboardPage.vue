@@ -168,7 +168,7 @@
           </div>
         </div>
 
-        <div v-if="searchResults.length > 0 && !searchAnswer && !searchRelated.length" class="search-results">
+        <div v-if="searchResults.length > 0" class="search-results">
           <div
             v-for="email in searchResults"
             :key="email.id"
@@ -210,7 +210,7 @@
             </div>
           </div>
         </div>
-        <div v-else-if="searchQuery && !searchLoading && searchDone && !searchAnswer && !searchRelated.length" class="no-results">
+        <div v-if="searchQuery && !searchLoading && searchDone && !searchAnswer && !searchRelated.length && searchResults.length === 0" class="no-results">
           No emails found matching your query.
         </div>
       </div>
@@ -454,6 +454,7 @@ export default {
       this.searchExplanation = ''
       try {
         const result = await searchEmails(this.email, this.searchQuery)
+        console.log('Search result:', JSON.stringify({ hasAnswer: !!result.answer, hasRelated: result.related?.length, hasResults: result.results?.length, interpretation: result.interpretation }))
         this.searchAnswer = result.answer || null
         this.searchRelated = result.related || []
         this.searchResults = result.results || []
