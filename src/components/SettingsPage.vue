@@ -125,6 +125,105 @@
         </div>
       </div>
 
+      <div class="settings-card">
+        <h2>Permanent Priorities</h2>
+        <p class="section-desc">
+          These never expire and are always used to spot relevant emails. Set them
+          once and they stick around.
+        </p>
+
+        <div v-if="permanentPriorities.length > 0" class="list-block">
+          <div
+            v-for="p in permanentPriorities"
+            :key="p.id"
+            class="list-row"
+          >
+            <input
+              v-if="editingId === p.id"
+              v-model="editingText"
+              class="list-input"
+              @keyup.enter="savePermanentEdit(p.id)"
+            />
+            <span v-else class="list-text">{{ p.rawText }}</span>
+            <div class="list-actions">
+              <button
+                v-if="editingId === p.id"
+                class="btn-mini btn-save"
+                @click="savePermanentEdit(p.id)"
+              >
+                Save
+              </button>
+              <button
+                v-else
+                class="btn-mini"
+                @click="startPermanentEdit(p)"
+              >
+                Edit
+              </button>
+              <button
+                class="btn-mini btn-danger"
+                @click="removePermanent(p.id)"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <p v-else class="empty-note">No permanent priorities yet.</p>
+
+        <div class="add-row">
+          <input
+            v-model="newPermanent"
+            class="list-input"
+            placeholder="e.g. Keep an eye on the bank loan"
+            @keyup.enter="addPermanent"
+          />
+          <button class="btn-add-item" @click="addPermanent" :disabled="!newPermanent.trim()">
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h2>Important Senders</h2>
+        <p class="section-desc">
+          Emails from these addresses are always flagged, even if they don't match
+          a daily or permanent priority.
+        </p>
+
+        <div v-if="importantSenders.length > 0" class="list-block">
+          <div
+            v-for="(sender, index) in importantSenders"
+            :key="index"
+            class="list-row"
+          >
+            <span class="list-text">{{ sender }}</span>
+            <div class="list-actions">
+              <button
+                class="btn-mini btn-danger"
+                @click="removeSender(index)"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <p v-else class="empty-note">No important senders yet.</p>
+
+        <div class="add-row">
+          <input
+            v-model="newSender"
+            class="list-input"
+            type="email"
+            placeholder="name@company.com"
+            @keyup.enter="addSender"
+          />
+          <button class="btn-add-item" @click="addSender" :disabled="!isValidSender">
+            Add
+          </button>
+        </div>
+      </div>
+
       <button class="btn btn-primary" @click="handleSave" :disabled="saving">
         {{ saving ? 'Saving...' : 'Save Settings' }}
       </button>
@@ -135,7 +234,7 @@
 </template>
 
 <script>
-import { getUserSettings, saveUserSettings, subscribePush, unsubscribePush, getVapidPublicKey } from '../api.js'
+import { getUserSettings, saveUserSettings, subscribePush, unsubscribePush, getVapidPublicKey, getPermanentPriorities, addPermanentPriority, updatePermanentPriority, deletePermanentPriority } from '../api.js'
 
 export default {
   name: 'SettingsPage',
@@ -154,6 +253,12 @@ export default {
       saving: false,
       message: '',
       isError: false,
+      permanentPriorities: [],
+      newPermanent: '',
+      editingId: null,
+      editingText: '',
+      importantSenders: [],
+      newSender: '',
     }
   },
   computed: {
@@ -165,6 +270,9 @@ export default {
     icsDownloadUrl() {
       return `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/calendar/ics/${encodeURIComponent(this.email)}`
     },
+    isValidSender() {
+      return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(this.newSender.trim())
+    },
   },
   async mounted() {
     if (!this.email) {
@@ -173,6 +281,7 @@ export default {
     }
 
     await this.loadSettings()
+    await this.loadPermanentPriorities()
     this.checkPushSupport()
 
     if (this.$route.query.calendar === 'connected') {
@@ -196,9 +305,64 @@ export default {
         this.form.timezone = settings.timezone || 'Europe/Lisbon'
         this.calendarConnected = settings.calendarConnected || false
         this.pushEnabled = !!settings.pushSubscription
+        this.importantSenders = settings.importantSenders || []
       } catch (e) {
         console.error('Failed to load settings:', e)
       }
+    },
+    async loadPermanentPriorities() {
+      try {
+        this.permanentPriorities = await getPermanentPriorities(this.email)
+      } catch (e) {
+        console.error('Failed to load permanent priorities:', e)
+      }
+    },
+    startPermanentEdit(p) {
+      this.editingId = p.id
+      this.editingText = p.rawText
+    },
+    async savePermanentEdit(id) {
+      const text = this.editingText.trim()
+      if (!text) return
+      try {
+        await updatePermanentPriority(this.email, id, text)
+        this.editingId = null
+        this.editingText = ''
+        await this.loadPermanentPriorities()
+      } catch (e) {
+        this.message = e.message || 'Failed to update priority'
+        this.isError = true
+      }
+    },
+    async addPermanent() {
+      const text = this.newPermanent.trim()
+      if (!text) return
+      try {
+        await addPermanentPriority(this.email, text)
+        this.newPermanent = ''
+        await this.loadPermanentPriorities()
+      } catch (e) {
+        this.message = e.message || 'Failed to add priority'
+        this.isError = true
+      }
+    },
+    async removePermanent(id) {
+      try {
+        await deletePermanentPriority(this.email, id)
+        await this.loadPermanentPriorities()
+      } catch (e) {
+        this.message = e.message || 'Failed to delete priority'
+        this.isError = true
+      }
+    },
+    addSender() {
+      const v = this.newSender.trim().toLowerCase()
+      if (!this.isValidSender || this.importantSenders.includes(v)) return
+      this.importantSenders.push(v)
+      this.newSender = ''
+    },
+    removeSender(index) {
+      this.importantSenders.splice(index, 1)
     },
     checkPushSupport() {
       this.pushSupported = 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window
@@ -263,7 +427,10 @@ export default {
       this.message = ''
       this.isError = false
       try {
-        await saveUserSettings(this.email, this.form)
+        await saveUserSettings(this.email, {
+          ...this.form,
+          importantSenders: this.importantSenders,
+        })
         this.message = 'Settings saved!'
         this.isError = false
       } catch (e) {
@@ -379,6 +546,41 @@ export default {
 .connected-badge { font-size: 12px; font-weight: 600; color: #059669; }
 
 .push-note { font-size: 12px; color: #94a3b8; margin-top: 8px; font-style: italic; }
+
+.list-block { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.list-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 14px; background: #f8fafc; border-radius: 10px;
+}
+.list-text { font-size: 14px; color: #0f172a; font-weight: 500; flex: 1; }
+.list-input {
+  flex: 1; padding: 11px 12px; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: 14px; color: #0f172a; outline: none;
+}
+.list-input:focus { border-color: #0078D4; box-shadow: 0 0 0 3px rgba(0,120,212,0.1); }
+.list-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+.btn-mini {
+  padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  border: 1px solid #e2e8f0; background: #fff; color: #475569; cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-mini:hover { background: #f1f5f9; }
+.btn-save { background: #0078D4; color: #fff; border-color: #0078D4; }
+.btn-save:hover { background: #005a9e; }
+.btn-danger { color: #dc2626; border-color: #fca5a5; background: #fef2f2; }
+.btn-danger:hover { background: #fee2e2; }
+
+.add-row { display: flex; align-items: center; gap: 8px; }
+.btn-add-item {
+  padding: 11px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  border: none; background: #0078D4; color: #fff; cursor: pointer; flex-shrink: 0;
+  transition: all 0.15s;
+}
+.btn-add-item:hover:not(:disabled) { background: #005a9e; }
+.btn-add-item:disabled { background: #94a3b8; cursor: not-allowed; }
+
+.empty-note { font-size: 13px; color: #94a3b8; margin: 0 0 16px; font-style: italic; }
 
 .btn {
   width: 100%; padding: 13px; border-radius: 8px; font-size: 15px; font-weight: 600;

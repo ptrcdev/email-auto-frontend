@@ -8,8 +8,7 @@
     <div class="login-container">
       <div class="login-card">
         <div class="brand">
-          <div class="brand-icon">A</div>
-          <h1 class="brand-name">AMICUS</h1>
+          <img src="/logo.svg" class="login-logo"/>
           <p class="brand-tagline">Your intelligent email assistant</p>
         </div>
 
@@ -104,6 +103,9 @@ const apiUrl = import.meta.env.VITE_API_URL
   margin-bottom: 32px;
 }
 
+.login-logo {
+  width: 200px;
+}
 .brand-icon {
   display: inline-flex;
   width: 48px;

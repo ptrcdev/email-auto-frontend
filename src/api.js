@@ -65,6 +65,70 @@ export async function savePriorities(email, priorities) {
   return response.json()
 }
 
+export async function getDailyPriorities(email) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}/daily`,
+  )
+  if (!response.ok) throw new Error('Failed to fetch priorities')
+  return response.json()
+}
+
+export async function getPermanentPriorities(email) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}/permanent`,
+  )
+  if (!response.ok) throw new Error('Failed to fetch permanent priorities')
+  return response.json()
+}
+
+export async function addPermanentPriority(email, rawText) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}/permanent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rawText }),
+    },
+  )
+  if (!response.ok) throw new Error('Failed to add permanent priority')
+  return response.json()
+}
+
+export async function updatePermanentPriority(email, id, rawText) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}/permanent/${encodeURIComponent(id)}`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rawText }),
+    },
+  )
+  if (!response.ok) throw new Error('Failed to update permanent priority')
+  return response.json()
+}
+
+export async function deletePermanentPriority(email, id) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}/permanent/${encodeURIComponent(id)}`,
+    {
+      method: 'DELETE',
+    },
+  )
+  if (!response.ok) throw new Error('Failed to delete permanent priority')
+  return response.json()
+}
+
+export async function deletePriority(email, id) {
+  const response = await fetch(
+    `${BASE_URL}/priorities/${encodeURIComponent(email)}/${encodeURIComponent(id)}`,
+    {
+      method: 'DELETE',
+    },
+  )
+  if (!response.ok) throw new Error('Failed to delete priority')
+  return response.json()
+}
+
 export async function getUserSettings(email) {
   const response = await fetch(
     `${BASE_URL}/users/${encodeURIComponent(email)}/settings`,

@@ -75,7 +75,100 @@
           </button>
         </div>
         <p v-if="searchInterpretation" class="search-interpretation">{{ searchInterpretation }}</p>
-        <div v-if="searchResults.length > 0" class="search-results">
+        <div v-if="searchAnswer" class="search-answer">
+          <div class="answer-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Best match
+          </div>
+          <div
+            class="email-card answer-card"
+            :class="'cat-' + searchAnswer.category"
+          >
+            <div class="email-header" @click="toggleExpand(searchAnswer.id)">
+              <span class="category-badge" :class="'badge-' + searchAnswer.category">{{ formatCategory(searchAnswer.category) }}</span>
+              <span class="email-subject">{{ searchAnswer.subject }}</span>
+              <span class="email-date">{{ formatDate(searchAnswer.receivedAt) }}</span>
+              <svg class="expand-icon" :class="{ expanded: expandedId === searchAnswer.id }" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="email-summary">
+              <span class="email-sender">{{ searchAnswer.sender }}</span>
+              <p>{{ searchAnswer.summary }}</p>
+            </div>
+            <div v-if="expandedId === searchAnswer.id" class="email-detail">
+              <div class="detail-row" v-if="searchAnswer.bodyPreview">
+                <label>Preview</label>
+                <p>{{ searchAnswer.bodyPreview }}</p>
+              </div>
+              <div class="detail-fields" v-if="searchAnswer.extractedFields">
+                <div v-if="searchAnswer.extractedFields.amount" class="detail-field">
+                  <label>Amount</label><span>{{ searchAnswer.extractedFields.amount }}</span>
+                </div>
+                <div v-if="searchAnswer.extractedFields.deadline" class="detail-field">
+                  <label>Deadline</label><span>{{ searchAnswer.extractedFields.deadline }}</span>
+                </div>
+                <div v-if="searchAnswer.extractedFields.projectName" class="detail-field">
+                  <label>Project</label><span>{{ searchAnswer.extractedFields.projectName }}</span>
+                </div>
+                <div v-if="searchAnswer.extractedFields.senderRole" class="detail-field">
+                  <label>Sender Role</label><span>{{ searchAnswer.extractedFields.senderRole }}</span>
+                </div>
+              </div>
+              <div class="detail-action" v-if="searchAnswer.suggestedAction">
+                <label>Suggested Action</label>
+                <span class="action-badge">{{ searchAnswer.suggestedAction }}</span>
+              </div>
+            </div>
+          </div>
+          <p v-if="searchExplanation" class="answer-explanation">{{ searchExplanation }}</p>
+        </div>
+
+        <div v-if="searchRelated.length > 0" class="search-related">
+          <h3 class="related-title">Related emails on this topic</h3>
+          <div class="search-results">
+            <div
+              v-for="email in searchRelated"
+              :key="email.id"
+              class="email-card search-result-card"
+            >
+              <div class="email-header" @click="toggleExpand(email.id)">
+                <span class="category-badge" :class="'badge-' + email.category">{{ formatCategory(email.category) }}</span>
+                <span class="email-subject">{{ email.subject }}</span>
+                <span class="email-date">{{ formatDate(email.receivedAt) }}</span>
+                <svg class="expand-icon" :class="{ expanded: expandedId === email.id }" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <div class="email-summary">
+                <span class="email-sender">{{ email.sender }}</span>
+                <p>{{ email.summary }}</p>
+              </div>
+              <div v-if="expandedId === email.id" class="email-detail">
+                <div class="detail-row" v-if="email.bodyPreview">
+                  <label>Preview</label>
+                  <p>{{ email.bodyPreview }}</p>
+                </div>
+                <div class="detail-fields" v-if="email.extractedFields">
+                  <div v-if="email.extractedFields.amount" class="detail-field">
+                    <label>Amount</label><span>{{ email.extractedFields.amount }}</span>
+                  </div>
+                  <div v-if="email.extractedFields.deadline" class="detail-field">
+                    <label>Deadline</label><span>{{ email.extractedFields.deadline }}</span>
+                  </div>
+                  <div v-if="email.extractedFields.projectName" class="detail-field">
+                    <label>Project</label><span>{{ email.extractedFields.projectName }}</span>
+                  </div>
+                  <div v-if="email.extractedFields.senderRole" class="detail-field">
+                    <label>Sender Role</label><span>{{ email.extractedFields.senderRole }}</span>
+                  </div>
+                </div>
+                <div class="detail-action" v-if="email.suggestedAction">
+                  <label>Suggested Action</label>
+                  <span class="action-badge">{{ email.suggestedAction }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="searchResults.length > 0 && !searchAnswer && !searchRelated.length" class="search-results">
           <div
             v-for="email in searchResults"
             :key="email.id"
@@ -117,7 +210,7 @@
             </div>
           </div>
         </div>
-        <div v-else-if="searchQuery && !searchLoading && searchDone" class="no-results">
+        <div v-else-if="searchQuery && !searchLoading && searchDone && !searchAnswer && !searchRelated.length" class="no-results">
           No emails found matching your query.
         </div>
       </div>
@@ -267,7 +360,10 @@ export default {
       loading: true,
       searchQuery: '',
       searchResults: [],
+      searchAnswer: null,
+      searchRelated: [],
       searchInterpretation: '',
+      searchExplanation: '',
       searchLoading: false,
       searchDone: false,
       expandedId: null,
@@ -352,11 +448,17 @@ export default {
       this.searchLoading = true
       this.searchDone = false
       this.searchResults = []
+      this.searchAnswer = null
+      this.searchRelated = []
       this.searchInterpretation = ''
+      this.searchExplanation = ''
       try {
         const result = await searchEmails(this.email, this.searchQuery)
-        this.searchResults = result.emails || []
+        this.searchAnswer = result.answer || null
+        this.searchRelated = result.related || []
+        this.searchResults = result.results || []
         this.searchInterpretation = result.interpretation || ''
+        this.searchExplanation = result.explanation || ''
       } catch (e) {
         console.error('Search failed:', e)
         this.searchInterpretation = 'Search failed. Please try again.'
@@ -653,6 +755,44 @@ export default {
 
 .search-result-card {
   border-left: 3px solid #0078D4 !important;
+}
+
+.search-answer { margin-top: 16px; }
+
+.answer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  background: #059669;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.answer-card {
+  border: 1px solid #059669 !important;
+  box-shadow: 0 2px 10px rgba(5, 150, 105, 0.15);
+}
+
+.answer-explanation {
+  font-size: 13px;
+  color: #64748b;
+  margin: 8px 2px 0;
+  font-style: italic;
+}
+
+.search-related { margin-top: 24px; }
+
+.related-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin: 0 0 12px;
 }
 
 .no-results {
