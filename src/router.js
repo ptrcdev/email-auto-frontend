@@ -12,7 +12,13 @@ import { getSession } from './session.js'
 const PROTECTED = ['/dashboard', '/onboarding', '/prompt', '/settings']
 
 const routes = [
-  { path: '/', redirect: '/login' },
+  {
+    path: '/',
+    redirect: () => {
+      const email = getSession()
+      return email ? { path: '/dashboard', query: { email } } : '/login'
+    }
+  },
   { path: '/login', name: 'Login', component: LoginPage },
   { path: '/success', name: 'AuthSuccess', component: AuthSuccess },
   { path: '/error', name: 'AuthError', component: AuthError },
