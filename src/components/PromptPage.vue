@@ -230,76 +230,60 @@ export default {
 </script>
 
 <style scoped>
-.prompt-page { min-height: 100vh; background: #f8fafc; }
+.prompt-page { min-height: 100vh; min-height: 100dvh; background: #f8fafc; }
 
 .prompt-header {
   background: #fff; border-bottom: 1px solid #e2e8f0;
-  padding: 0 32px; height: 60px;
+  padding: 0 12px; height: 56px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.header-left { display: flex; align-items: center; gap: 20px; }
+.header-left { display: flex; align-items: center; gap: 12px; }
 .brand { display: flex; align-items: center; gap: 8px; }
 .brand-icon {
-  width: 32px; height: 32px; border-radius: 8px;
+  width: 30px; height: 30px; border-radius: 8px;
   background: linear-gradient(135deg, #0078D4, #6C5CE7);
   color: #fff; display: flex; align-items: center; justify-content: center;
-  font-size: 15px; font-weight: 800;
+  font-size: 14px; font-weight: 800;
 }
 .brand-name {
-  font-size: 16px; font-weight: 800; letter-spacing: -0.3px;
+  font-size: 15px; font-weight: 800; letter-spacing: -0.3px;
   background: linear-gradient(135deg, #0078D4, #6C5CE7);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 .btn-back {
-  display: flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 8px; border: 1px solid #e2e8f0;
-  background: #fff; color: #475569; font-size: 13px; font-weight: 500;
-  cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 10px; border-radius: 8px; border: 1px solid #e2e8f0;
+  background: #fff; color: #475569; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s; min-height: 36px;
 }
-.btn-back:hover { background: #f1f5f9; border-color: #cbd5e1; }
+.btn-back:hover { background: #f1f5f9; }
 
-.prompt-main { max-width: 600px; margin: 0 auto; padding: 32px 24px; }
+.prompt-main { max-width: 700px; margin: 0 auto; padding: 20px 16px 48px; }
+.prompt-title { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 6px; }
+.prompt-desc { font-size: 13px; color: #64748b; margin: 0 0 24px; line-height: 1.5; }
 
 .prompt-card {
-  background: #fff; border-radius: 16px; padding: 32px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  background: #fff; border-radius: 12px; padding: 20px;
+  border: 1px solid #e2e8f0; margin-bottom: 20px;
 }
-.prompt-icon { text-align: center; margin-bottom: 16px; }
-h1 { font-size: 22px; font-weight: 700; color: #0f172a; margin: 0 0 8px; text-align: center; }
-.prompt-subtitle { font-size: 14px; color: #64748b; margin: 0 0 24px; text-align: center; }
+.prompt-card h2 { font-size: 15px; font-weight: 700; color: #0f172a; margin: 0 0 4px; }
+.card-desc { font-size: 12px; color: #64748b; margin: 0 0 16px; }
 
-.prompt-section {
-  padding: 18px; background: #f8fafc; border: 1px solid #e2e8f0;
-  border-radius: 12px; margin-bottom: 16px;
+.priorities-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.priority-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; background: #f8fafc; border-radius: 8px;
 }
-.section-title {
-  font-size: 14px; font-weight: 700; color: #0f172a; margin: 0 0 4px;
+.priority-text { font-size: 13px; color: #0f172a; font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.priority-input {
+  flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px;
+  font-size: 13px; color: #0f172a; outline: none; min-width: 0;
 }
-.section-desc { font-size: 12px; color: #94a3b8; margin: 0 0 14px; }
-
-.priority-textarea {
-  width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px;
-  font-size: 14px; line-height: 1.6; color: #0f172a; outline: none;
-  resize: vertical; font-family: inherit; box-sizing: border-box;
-}
-.priority-textarea:focus { border-color: #0078D4; box-shadow: 0 0 0 3px rgba(0,120,212,0.1); }
-
-.list-block { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-.list-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 10px 12px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
-}
-.list-text { font-size: 14px; color: #0f172a; font-weight: 500; flex: 1; }
-.list-input {
-  flex: 1; padding: 11px 12px; border: 1px solid #e2e8f0; border-radius: 8px;
-  font-size: 14px; color: #0f172a; outline: none;
-}
-.list-input:focus { border-color: #0078D4; box-shadow: 0 0 0 3px rgba(0,120,212,0.1); }
-.list-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.priority-expires { font-size: 11px; color: #64748b; flex-shrink: 0; }
+.priority-input:focus { border-color: #0078D4; box-shadow: 0 0 0 3px rgba(0,120,212,0.1); }
+.priority-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 
 .btn-mini {
-  padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;
   border: 1px solid #e2e8f0; background: #fff; color: #475569; cursor: pointer;
   transition: all 0.15s;
 }
@@ -310,24 +294,35 @@ h1 { font-size: 22px; font-weight: 700; color: #0f172a; margin: 0 0 8px; text-al
 .btn-danger:hover { background: #fee2e2; }
 
 .add-row { display: flex; align-items: center; gap: 8px; }
-.btn-add-item {
-  padding: 11px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+.btn-add-priority {
+  padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
   border: none; background: #0078D4; color: #fff; cursor: pointer; flex-shrink: 0;
-  transition: all 0.15s;
+  transition: all 0.15s; min-height: 40px;
 }
-.btn-add-item:hover:not(:disabled) { background: #005a9e; }
-.btn-add-item:disabled { background: #94a3b8; cursor: not-allowed; }
+.btn-add-priority:hover:not(:disabled) { background: #005a9e; }
+.btn-add-priority:disabled { background: #94a3b8; cursor: not-allowed; }
 
-.empty-note { font-size: 13px; color: #94a3b8; margin: 0 0 14px; font-style: italic; }
+.empty-note { font-size: 12px; color: #94a3b8; margin: 0 0 16px; font-style: italic; }
 
 .btn {
-  width: 100%; padding: 13px; border-radius: 8px; font-size: 15px; font-weight: 600;
-  cursor: pointer; border: none; transition: all 0.15s;
+  width: 100%; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.15s; min-height: 44px;
 }
 .btn-primary { background: #0078D4; color: #fff; box-shadow: 0 2px 8px rgba(0,120,212,0.3); }
-.btn-primary:hover:not(:disabled) { background: #005a9e; transform: translateY(-1px); }
+.btn-primary:hover:not(:disabled) { background: #005a9e; }
 .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
 
-.message { font-size: 13px; margin-top: 12px; text-align: center; color: #059669; }
+.message { font-size: 12px; margin-top: 10px; text-align: center; color: #059669; }
 .message.error { color: #dc2626; }
+
+@media (min-width: 768px) {
+  .prompt-header { padding: 0 24px; height: 60px; }
+  .brand-icon { width: 32px; height: 32px; font-size: 15px; }
+  .brand-name { font-size: 16px; }
+  .btn-back { padding: 7px 14px; font-size: 13px; }
+  .prompt-main { padding: 32px 24px 48px; }
+  .prompt-title { font-size: 24px; }
+  .prompt-desc { font-size: 14px; }
+  .prompt-card { padding: 24px; }
+}
 </style>

@@ -53,22 +53,20 @@ const apiUrl = import.meta.env.VITE_API_URL
 <style scoped>
 .login-page {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
   background: #0f172a;
+  padding: 16px;
 }
 
-.login-bg {
-  position: absolute;
-  inset: 0;
-}
+.login-bg { position: absolute; inset: 0; }
 
 .bg-gradient {
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background:
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 120, 212, 0.25), transparent),
     radial-gradient(ellipse 60% 40% at 80% 50%, rgba(108, 92, 231, 0.15), transparent),
@@ -76,143 +74,67 @@ const apiUrl = import.meta.env.VITE_API_URL
 }
 
 .bg-pattern {
-  position: absolute;
-  inset: 0;
-  opacity: 0.03;
+  position: absolute; inset: 0; opacity: 0.03;
   background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0);
   background-size: 32px 32px;
 }
 
 .login-container {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 420px;
-  padding: 24px;
+  position: relative; z-index: 1; width: 100%; max-width: 400px;
 }
 
 .login-card {
   background: rgba(255, 255, 255, 0.97);
   border-radius: 16px;
-  padding: 40px 32px;
+  padding: 32px 24px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
-.brand {
-  text-align: center;
-  margin-bottom: 32px;
+@media (min-width: 480px) {
+  .login-card { padding: 40px 32px; }
 }
 
-.login-logo {
-  width: 200px;
-}
-.brand-icon {
-  display: inline-flex;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #0078D4, #6C5CE7);
-  color: #fff;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 800;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 120, 212, 0.3);
-}
+.brand { text-align: center; margin-bottom: 28px; }
 
-.brand-name {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin: 0;
-  background: linear-gradient(135deg, #0078D4, #6C5CE7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+.login-logo { width: 180px; margin-bottom: 8px; }
+@media (min-width: 480px) { .login-logo { width: 200px; } }
 
 .brand-tagline {
-  font-size: 14px;
-  color: #64748b;
-  margin: 8px 0 0;
+  font-size: 14px; color: #64748b; margin: 8px 0 0;
 }
 
 .login-divider {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
 }
-
 .login-divider::before,
-.login-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #e2e8f0;
-}
+.login-divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+.login-divider span { font-size: 13px; color: #94a3b8; white-space: nowrap; }
 
-.login-divider span {
-  font-size: 13px;
-  color: #94a3b8;
-  white-space: nowrap;
-}
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.button-group { display: flex; flex-direction: column; gap: 10px; }
 
 .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 14px 24px;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.15s;
-  border: none;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 14px 20px; border-radius: 10px; font-size: 15px; font-weight: 600;
+  text-decoration: none; cursor: pointer; transition: all 0.15s; border: none;
+  min-height: 48px;
 }
 
 .btn-icon { flex-shrink: 0; }
 
 .btn-google {
-  background: #fff;
-  color: #0f172a;
-  border: 1px solid #e2e8f0;
+  background: #fff; color: #0f172a; border: 1px solid #e2e8f0;
 }
-
-.btn-google:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+.btn-google:hover { background: #f8fafc; border-color: #cbd5e1; }
+.btn-google:active { background: #f1f5f9; }
 
 .btn-outlook {
-  background: #0078D4;
-  color: #fff;
+  background: #0078D4; color: #fff;
   box-shadow: 0 2px 8px rgba(0, 120, 212, 0.3);
 }
-
-.btn-outlook:hover {
-  background: #005a9e;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
-}
-
-.btn:active { transform: translateY(0); }
+.btn-outlook:hover { background: #005a9e; }
+.btn-outlook:active { background: #004e8a; }
 
 .login-footer {
-  text-align: center;
-  font-size: 12px;
-  color: #94a3b8;
-  margin-top: 24px;
+  text-align: center; font-size: 12px; color: #94a3b8; margin-top: 20px;
 }
 </style>
