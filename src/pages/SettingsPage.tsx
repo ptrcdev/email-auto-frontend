@@ -69,7 +69,7 @@ const timeOptions = generateTimeOptions();
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export function SettingsPage() {
-  const { email } = useAuth();
+  const { email, logout } = useAuth();
 
   const [settings, setSettings] = useState<UserSettings>({
     digestTime: '08:00',

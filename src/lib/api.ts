@@ -53,6 +53,15 @@ export async function getAnalytics(email: string): Promise<Analytics> {
   );
 }
 
+export async function getDashboardEmails(
+  email: string,
+  days: number = 30,
+): Promise<Record<string, EmailRecord[]>> {
+  return fetchJson(
+    `${BASE_URL}/dashboard/${encodeURIComponent(email)}/emails?days=${days}`,
+  );
+}
+
 export async function searchEmails(
   email: string,
   query: string,

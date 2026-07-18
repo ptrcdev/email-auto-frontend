@@ -91,7 +91,6 @@ export function DashboardPage() {
                   count={cat.count}
                   emails={cat.emails}
                   color={cat.color}
-                  onViewAll={cat.onViewAll}
                 />
               </div>
             ))}

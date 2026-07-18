@@ -485,7 +485,7 @@ export function PrivacyPolicyPage() {
 
         {/* Footer */}
         <div className="mt-12 pt-8 border-t border-white/10 text-center text-slate-500 text-xs">
-          © 2026 Patricia Almeida · AMICUS
+          © 2026 AzulLogic · AMICUS
         </div>
       </div>
     </div>
