@@ -22,38 +22,58 @@
   </head>
   <body>
     <div id="root">
-      <!-- Visible to crawlers and bots that don't execute JavaScript -->
+      <!-- Static content for crawlers that do not execute JavaScript -->
       <header>
         <h1>AMICUS</h1>
-        <p>AI-powered email briefing assistant by AzulLogic</p>
+        <p>AI Email Assistant</p>
+        <p>
+          AMICUS is an AI-powered email assistant that helps users organise their inbox by
+          automatically summarising emails, identifying important messages, and providing a
+          daily overview of incoming communications.
+        </p>
+        <a href="/login">Sign in to AMICUS</a>
       </header>
       <main>
-        <p>
-          AMICUS connects to your Google or Microsoft email account and delivers a clear,
-          prioritised daily brief every morning — so you always know what needs your attention
-          without spending an hour in your inbox.
-        </p>
-        <h2>What AMICUS does</h2>
-        <ul>
-          <li>Summarises your inbox into a prioritised daily email brief</li>
-          <li>Learns which topics and senders matter most to you</li>
-          <li>Delivers your brief at a time and timezone you choose</li>
-          <li>Provides inbox analytics — volume trends, busiest senders, response times</li>
-          <li>Sends push and calendar reminders to help you plan your day</li>
-        </ul>
-        <h2>How it works</h2>
-        <ol>
-          <li>Connect your Google or Microsoft email account</li>
-          <li>Set your priorities — topics and senders that matter to you</li>
-          <li>Receive a concise daily brief every morning</li>
-        </ol>
-        <a href="/login">Sign in to AMICUS</a>
+        <section>
+          <h2>What AMICUS does</h2>
+          <ul>
+            <li>Connects securely to your Gmail or Microsoft Outlook account with your explicit permission</li>
+            <li>Reads your emails to generate AI-powered summaries and insights</li>
+            <li>Highlights your most important incoming messages each day</li>
+            <li>Delivers a concise daily brief of your inbox every morning</li>
+            <li>Helps you stay on top of your inbox without spending hours reading emails</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Why AMICUS requests Google access</h2>
+          <p>
+            AMICUS requests access to your Gmail account only to retrieve emails that you
+            explicitly authorise. Your data is processed solely to generate summaries and
+            improve your email management experience. We do not sell your data or use it
+            for advertising.
+          </p>
+          <p>
+            AMICUS's use of data received from Google APIs adheres to the Google API Services
+            User Data Policy, including the Limited Use requirements.
+          </p>
+        </section>
+        <section>
+          <h2>Privacy &amp; Security</h2>
+          <p>
+            AMICUS is operated by AzulLogic. We never sell your personal data or email
+            content to third parties. AMICUS complies with GDPR and applicable data
+            protection law.
+          </p>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="mailto:info@azullogic.com">Contact: info@azullogic.com</a>
+        </section>
       </main>
       <footer>
-        <p>AMICUS is operated by AzulLogic. &copy; 2026 AzulLogic.</p>
+        <p>AMICUS &mdash; AI Email Assistant operated by AzulLogic. &copy; 2026 AzulLogic.</p>
         <nav>
-          <a href="/terms">Terms of Service</a>
           <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
           <a href="mailto:info@azullogic.com">Contact</a>
         </nav>
       </footer>

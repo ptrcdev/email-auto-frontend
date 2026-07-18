@@ -1,46 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Mail, Zap, Shield, Clock, BarChart2, Bell } from 'lucide-react';
+import { Mail, ShieldCheck, Sparkles, ListChecks, Eye, Lock } from 'lucide-react';
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-
-const features = [
-  {
-    icon: Mail,
-    title: 'Daily email briefs',
-    description:
-      'Get a concise, AI-generated summary of your inbox every morning — no more inbox overload.',
-  },
-  {
-    icon: Zap,
-    title: 'Smart prioritisation',
-    description:
-      'AMICUS learns what matters to you and surfaces the emails that need your attention first.',
-  },
-  {
-    icon: Clock,
-    title: 'Digest on your schedule',
-    description:
-      'Choose your delivery time and timezone so your brief arrives exactly when you start your day.',
-  },
-  {
-    icon: BarChart2,
-    title: 'Email analytics',
-    description:
-      'Understand your inbox patterns — busiest senders, volume trends, and response times at a glance.',
-  },
-  {
-    icon: Bell,
-    title: 'Reminders & notifications',
-    description:
-      'Get push and calendar reminders to set your priorities before the day begins.',
-  },
-  {
-    icon: Shield,
-    title: 'Privacy first',
-    description:
-      'Your data is processed solely to deliver your brief. We never sell or share it with third parties.',
-  },
-];
 
 export function LandingPage() {
   return (
@@ -48,9 +9,9 @@ export function LandingPage() {
 
       {/* Nav */}
       <header className="border-b border-white/10">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shrink-0">
               <span className="text-white font-bold text-sm">A</span>
             </div>
             <span className="font-bold text-lg tracking-tight">AMICUS</span>
@@ -64,28 +25,18 @@ export function LandingPage() {
         </div>
       </header>
 
-      {/* Hero */}
-      <main>
-        <section className="max-w-5xl mx-auto px-6 pt-24 pb-20 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-300 text-xs font-medium mb-6">
-            <Zap className="w-3 h-3" />
-            AI-powered email assistant
-          </div>
+      <main className="max-w-4xl mx-auto px-6">
 
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-6 leading-tight">
-            Your inbox, summarised.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Every morning.
-            </span>
-          </h1>
-
-          <p className="text-slate-400 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-            AMICUS connects to your Google or Microsoft email account and delivers a
-            clear, prioritised daily brief so you always know what needs your attention —
-            without spending an hour in your inbox.
+        {/* ── Hero ── */}
+        <section className="py-20 text-center">
+          <h1 className="text-5xl font-bold tracking-tight mb-3">AMICUS</h1>
+          <p className="text-xl font-medium text-blue-300 mb-6">AI Email Assistant</p>
+          <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
+            AMICUS is an AI-powered email assistant that helps users organise their inbox by
+            automatically summarising emails, identifying important messages, and providing a
+            daily overview of incoming communications.
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-10">
             <a
               href={`${BASE_URL}/auth/google`}
               className="flex items-center justify-center gap-3 px-6 py-3 bg-white rounded-xl text-slate-900 font-medium hover:bg-slate-100 transition-colors"
@@ -113,84 +64,161 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* Features */}
-        <section className="max-w-5xl mx-auto px-6 pb-24">
-          <h2 className="text-center text-xl font-semibold text-slate-200 mb-10">
-            Everything you need to stay on top of your inbox
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {features.map(({ icon: Icon, title, description }) => (
-              <div
-                key={title}
-                className="rounded-xl border border-white/10 bg-white/5 p-5 space-y-3"
-              >
-                <div className="w-9 h-9 rounded-lg bg-blue-500/15 flex items-center justify-center">
-                  <Icon className="w-4.5 h-4.5 text-blue-400" />
+        <hr className="border-white/10" />
+
+        {/* ── What AMICUS does ── */}
+        <section className="py-16">
+          <h2 className="text-2xl font-bold text-center mb-10">What AMICUS does</h2>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {[
+              {
+                icon: Mail,
+                title: 'Connects to your inbox',
+                body: 'Securely connects to your Gmail or Microsoft Outlook account with your explicit permission.',
+              },
+              {
+                icon: Eye,
+                title: 'Reads your emails',
+                body: 'Reads emails you have authorised access to in order to generate summaries and insights.',
+              },
+              {
+                icon: Sparkles,
+                title: 'Generates AI summaries',
+                body: 'Uses AI to produce a concise daily brief of your most important incoming messages.',
+              },
+              {
+                icon: ListChecks,
+                title: 'Highlights what matters',
+                body: 'Identifies high-priority emails and surfaces them so nothing important gets missed.',
+              },
+            ].map(({ icon: Icon, title, body }) => (
+              <div key={title} className="flex gap-4 p-5 rounded-xl border border-white/10 bg-white/5">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/15 flex items-center justify-center shrink-0">
+                  <Icon className="w-5 h-5 text-blue-400" />
                 </div>
-                <h3 className="font-semibold text-white">{title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{description}</p>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">{title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{body}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* How it works */}
-        <section className="border-t border-white/10">
-          <div className="max-w-5xl mx-auto px-6 py-20">
-            <h2 className="text-center text-xl font-semibold text-slate-200 mb-12">
-              How it works
-            </h2>
-            <div className="grid sm:grid-cols-3 gap-8 text-center">
-              {[
-                { step: '1', title: 'Connect your email', body: 'Sign in with Google or Microsoft. AMICUS gets read access to your inbox — nothing is ever sent or deleted.' },
-                { step: '2', title: 'Set your priorities', body: 'Tell AMICUS what topics and senders matter to you. It uses these to rank and filter your daily brief.' },
-                { step: '3', title: 'Receive your brief', body: 'Every morning at your chosen time, AMICUS sends you a concise summary of everything that matters.' },
-              ].map(({ step, title, body }) => (
-                <div key={step} className="space-y-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center mx-auto text-sm font-bold">
-                    {step}
-                  </div>
-                  <h3 className="font-semibold text-white">{title}</h3>
+        <hr className="border-white/10" />
+
+        {/* ── How it works ── */}
+        <section className="py-16">
+          <h2 className="text-2xl font-bold text-center mb-10">How it works</h2>
+          <div className="grid sm:grid-cols-3 gap-8 text-center">
+            {[
+              { step: '1', title: 'Connect your email', body: 'Sign in with Google or Microsoft. AMICUS requests only the permissions needed to read your emails.' },
+              { step: '2', title: 'AI analyses your inbox', body: 'AMICUS processes your incoming messages to identify what is important and generate plain-language summaries.' },
+              { step: '3', title: 'Receive your daily brief', body: 'Every morning, you get a concise overview of your inbox — prioritised, summarised, and ready to act on.' },
+            ].map(({ step, title, body }) => (
+              <div key={step} className="space-y-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center mx-auto text-sm font-bold">
+                  {step}
+                </div>
+                <h3 className="font-semibold text-white">{title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <hr className="border-white/10" />
+
+        {/* ── Why we request Google access ── */}
+        <section className="py-16">
+          <h2 className="text-2xl font-bold text-center mb-6">Why AMICUS requests Google access</h2>
+          <div className="max-w-2xl mx-auto rounded-xl border border-blue-500/30 bg-blue-500/5 p-6 text-slate-300 text-sm leading-relaxed space-y-3">
+            <p>
+              AMICUS requests access to your Gmail account <strong className="text-white">only to retrieve emails
+              that you explicitly authorise</strong>. Your emails are processed solely to generate
+              summaries and help you manage your inbox more effectively.
+            </p>
+            <p>
+              We do not sell your data, use it for advertising, or share it with third parties
+              outside of what is described in our{' '}
+              <Link to="/privacy" className="text-blue-400 hover:text-blue-300 underline underline-offset-2">
+                Privacy Policy
+              </Link>
+              .
+            </p>
+            <p>
+              AMICUS's use of data received from Google APIs adheres to the{' '}
+              <a
+                href="https://developers.google.com/terms/api-services-user-data-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 underline underline-offset-2"
+              >
+                Google API Services User Data Policy
+              </a>
+              , including the Limited Use requirements.
+            </p>
+          </div>
+        </section>
+
+        <hr className="border-white/10" />
+
+        {/* ── Privacy & Security ── */}
+        <section className="py-16">
+          <h2 className="text-2xl font-bold text-center mb-10">Privacy &amp; Security</h2>
+          <div className="grid sm:grid-cols-2 gap-5">
+            {[
+              {
+                icon: ShieldCheck,
+                title: 'Your data stays yours',
+                body: 'We never sell your personal data or email content to third parties.',
+              },
+              {
+                icon: Lock,
+                title: 'Minimal permissions',
+                body: 'AMICUS requests only the access it needs — read-only access to retrieve your messages.',
+              },
+              {
+                icon: Eye,
+                title: 'Transparent processing',
+                body: 'Emails are processed to generate summaries for you. That is the only purpose.',
+              },
+              {
+                icon: ListChecks,
+                title: 'GDPR compliant',
+                body: 'AMICUS is operated by AzulLogic and complies with GDPR and applicable data protection law.',
+              },
+            ].map(({ icon: Icon, title, body }) => (
+              <div key={title} className="flex gap-4 p-5 rounded-xl border border-white/10 bg-white/5">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
+                  <Icon className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white mb-1">{title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{body}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="border-t border-white/10">
-          <div className="max-w-5xl mx-auto px-6 py-20 text-center">
-            <h2 className="text-2xl font-bold mb-4">Start your day with clarity</h2>
-            <p className="text-slate-400 mb-8 max-w-md mx-auto text-sm">
-              Join AMICUS and spend less time in your inbox, more time on work that matters.
-            </p>
-            <Link
-              to="/login"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white font-medium hover:opacity-90 transition-opacity"
-            >
-              <Mail className="w-4 h-4" />
-              Get started free
-            </Link>
-          </div>
-        </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10">
-        <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-xs">
+      {/* ── Footer ── */}
+      <footer className="border-t border-white/10 mt-4">
+        <div className="max-w-4xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500 text-xs">
           <p>© 2026 AzulLogic · AMICUS</p>
-          <div className="flex items-center gap-5">
-            <Link to="/terms" className="hover:text-slate-300 transition-colors">
-              Terms of Service
-            </Link>
+          <nav className="flex items-center gap-5">
             <Link to="/privacy" className="hover:text-slate-300 transition-colors">
               Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-slate-300 transition-colors">
+              Terms of Service
             </Link>
             <a href="mailto:info@azullogic.com" className="hover:text-slate-300 transition-colors">
               Contact
             </a>
-          </div>
+          </nav>
         </div>
       </footer>
 
